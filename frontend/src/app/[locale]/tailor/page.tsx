@@ -19,6 +19,8 @@ export default function TailorPage() {
   const { showToast } = useToast();
   const [improvementId, setImprovementId] = useState('');
   const [previewHash, setPreviewHash] = useState('');
+  const [results, setResults] = useState<{resumeId: string, cl: string, outreach: string} | null>(null);
+  const [activeTab, setActiveTab] = useState<'resume' | 'cl' | 'outreach'>('resume');
   const router = useRouter();
 
   useEffect(() => {
@@ -53,13 +55,65 @@ export default function TailorPage() {
   const handleConfirm = async () => {
     try {
       const response = await confirmMatch(improvementId, previewHash);
-      const newResumeId = response.data.tailored_resume_id;
-      router.push(`/builder?id=${newResumeId}`);
+      setResults({
+        resumeId: response.data.tailored_resume_id,
+        cl: response.data.cover_letter,
+        outreach: response.data.outreach_message
+      });
+      showToast('Document Kit generated successfully!', 'success');
+      setDiff(null);
     } catch (err) {
       console.error(err);
       showToast('Failed to apply improvements. Check AI engine status.', 'error');
     }
   };
+
+  if (results) {
+    return (
+      <div className="min-h-screen bg-canvas flex flex-col">
+        <Navbar />
+        <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-12 space-y-8">
+          <header className="border-b-8 border-black pb-8">
+            <h1 className="text-6xl font-space font-black uppercase tracking-tighter">
+              Your <span className="text-hyper-blue">Kit</span>
+            </h1>
+            <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mt-2">Tailored assets ready for application.</p>
+          </header>
+
+          <div className="flex gap-2 border-b-4 border-black pb-2">
+            <button onClick={() => setActiveTab('resume')} className={`px-4 py-2 font-bold uppercase text-xs tracking-widest ${activeTab === 'resume' ? 'bg-black text-white' : 'hover:bg-gray-200'}`}>01. Resume</button>
+            {results.cl && <button onClick={() => setActiveTab('cl')} className={`px-4 py-2 font-bold uppercase text-xs tracking-widest ${activeTab === 'cl' ? 'bg-black text-white' : 'hover:bg-gray-200'}`}>02. Cover Letter</button>}
+            {results.outreach && <button onClick={() => setActiveTab('outreach')} className={`px-4 py-2 font-bold uppercase text-xs tracking-widest ${activeTab === 'outreach' ? 'bg-black text-white' : 'hover:bg-gray-200'}`}>03. Outreach</button>}
+          </div>
+
+          <Card padding="none" className="min-h-[400px] flex flex-col overflow-hidden">
+            <div className="flex-1 p-8 font-sans text-sm whitespace-pre-wrap leading-relaxed overflow-y-auto bg-white">
+              {activeTab === 'resume' ? (
+                <div className="flex flex-col items-center justify-center h-full space-y-4 py-12">
+                  <CheckCircle2 size={48} className="text-green-500" />
+                  <h3 className="text-xl font-black uppercase">Tailoring Successful</h3>
+                  <p className="text-gray-500 text-center max-w-sm font-bold">Your resume has been surgically optimized for the job description.</p>
+                </div>
+              ) : (
+                activeTab === 'cl' ? results.cl : results.outreach
+              )}
+            </div>
+            <div className="p-6 border-t-4 border-black flex justify-between items-center bg-canvas">
+              {activeTab === 'resume' ? (
+                <Button variant="primary" onClick={() => router.push(`/builder?id=${results.resumeId}`)}>Open in Builder</Button>
+              ) : (
+                <Button variant="outline" onClick={() => {
+                  navigator.clipboard.writeText(activeTab === 'cl' ? results.cl : results.outreach);
+                  showToast('Copied to clipboard!', 'success');
+                }}>Copy to Clipboard</Button>
+              )}
+              <Button variant="outline" onClick={() => { setResults(null); setActiveTab('resume'); }}>Generate Another</Button>
+            </div>
+          </Card>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-canvas flex flex-col">

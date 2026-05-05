@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from ..models.database import get_db
 from ..models.models import Resume, Job, Improvement
 from ..services.llm import get_completion
+from ..core.config import settings
 import json
 import hashlib
 import uuid
@@ -264,10 +265,26 @@ async def confirm_match(
     )
     db.add(tailored_resume)
     
+    # 4. Generate Supporting Documents
+    cover_letter = None
+    outreach_message = None
+    
+    if settings.GENERATE_COVER_LETTER:
+        cl_prompt = f"Write a professional cover letter for this job description: {job.description}\n\nBased on this resume: {json.dumps(final_data)}\n\nReturn plain text only, no JSON."
+        cover_letter = await get_completion([{"role": "user", "content": cl_prompt}])
+        
+    if settings.GENERATE_OUTREACH:
+        # Use summary or first job description as background
+        summary = final_data.get("summary", "")
+        out_prompt = f"Write a short LinkedIn outreach message (under 150 words) for this job: {job.description}\n\nApplicant background: {summary}\n\nReturn plain text only."
+        outreach_message = await get_completion([{"role": "user", "content": out_prompt}])
+
     improvement.status = "confirmed"
     db.commit()
     
     return {
         "tailored_resume_id": tailored_resume.id,
-        "data": final_data
+        "data": final_data,
+        "cover_letter": cover_letter,
+        "outreach_message": outreach_message
     }
