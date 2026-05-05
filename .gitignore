@@ -1,26 +1,10 @@
-# Dependencies
-node_modules/
-v/
-venv/
-.venv/
-env/
-__pycache__/
+data/config.json
+data/*.db
+dxdiag_output.txt
+backend/v/
+**/__pycache__/
 *.pyc
-
-# Next.js
+.env
+.env.local
+node_modules/
 .next/
-out/
-build/
-
-# IDEs
-.vscode/
-.idea/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Data
-data.db
-data/
-max claud/

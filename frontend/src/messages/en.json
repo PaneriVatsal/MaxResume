@@ -1,0 +1,20 @@
+{
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "builder": "Resume Builder",
+    "tailor": "Tailor Resume",
+    "settings": "Settings"
+  },
+  "Dashboard": {
+    "title": "My Resumes",
+    "upload_button": "Upload Resume",
+    "empty_state": "No resumes found. Upload your master resume to get started."
+  },
+  "Settings": {
+    "title": "Settings",
+    "llm_provider": "LLM Provider",
+    "api_key": "API Key",
+    "save_button": "Save Configuration",
+    "language": "UI Language"
+  }
+}

@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #f0f0e8;
+  --color-hyper-blue: #1d4ed8;
+  --color-ink: #000000;
+  
+  --font-sans: var(--font-geist-sans);
+  --font-space: var(--font-space-grotesk);
+  
+  --shadow-brutalist-sm: 2px 2px 0px 0px rgba(0,0,0,1);
+  --shadow-brutalist: 4px 4px 0px 0px rgba(0,0,0,1);
+  --shadow-brutalist-lg: 8px 8px 0px 0px rgba(0,0,0,1);
+  --shadow-brutalist-xl: 12px 12px 0px 0px rgba(0,0,0,1);
+}
+
+:root {
+  --background: var(--color-canvas);
+  --foreground: var(--color-ink);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@utility shadow-brutalist-sm {
+  shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+}
+
+@utility shadow-brutalist {
+  shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
+
+@utility shadow-brutalist-lg {
+  shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+}
+
+@utility shadow-brutalist-xl {
+  shadow: 12px 12px 0px 0px rgba(0,0,0,1);
+}
+
+@layer utilities {
+  .brutalist-card {
+    @apply border-2 border-black bg-white shadow-brutalist;
+  }
+  .brutalist-button {
+    @apply border-2 border-black bg-white px-4 py-2 font-bold shadow-brutalist active:translate-x-[2px] active:translate-y-[2px] active:shadow-brutalist-sm transition-all;
+  }
+  .brutalist-input {
+    @apply border-2 border-black bg-white p-2 focus:outline-none focus:ring-0 rounded-none;
+  }
+}

@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+sqlalchemy
+markitdown
+litellm
+playwright
+python-multipart
+pydantic
+pydantic-settings
+python-dotenv
+aiofiles
+jinja2
