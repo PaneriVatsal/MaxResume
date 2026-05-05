@@ -20,8 +20,18 @@ MaxResume is a production-grade AI platform designed to bridge the gap between y
 ---
 
 ## 📸 Preview
+
+### Dashboard
 ![Dashboard](docs/screenshot-dashboard.png)
 > Upload your resume → Paste JD → Get tailored resume in seconds
+
+### AI Tailoring Engine
+![Tailor Resume](docs/screenshot-tailor.png)
+> Surgical precision in matching your experience to job requirements.
+
+### Intelligent Settings
+![Settings](docs/screenshot-settings.png)
+> Configure your local (Ollama) or cloud (Gemini/OpenAI) LLM brains.
 
 ---
 
