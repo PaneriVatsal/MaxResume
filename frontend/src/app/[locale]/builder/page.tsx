@@ -286,22 +286,38 @@ export default function BuilderPage() {
                         </button>
                       </div>
                     ))}
-                    <input 
-                      type="text" 
-                      placeholder="+ Paste LinkedIn, GitHub, or Portfolio URL (Press Enter)" 
-                      className="w-full border-2 border-black border-dashed px-3 py-2 text-sm font-mono outline-none focus:border-solid focus:border-hyper-blue bg-white"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          const val = (e.target as HTMLInputElement).value;
-                          if (val) {
-                            const newLinks = [...(resumeData.personalInfo?.links || []), val];
-                            handleUpdate('personalInfo', { ...resumeData.personalInfo, links: newLinks });
-                            (e.target as HTMLInputElement).value = '';
+                    <div className="flex w-full gap-2">
+                      <input 
+                        id="link-input"
+                        type="text" 
+                        placeholder="Paste LinkedIn, GitHub, or Portfolio URL" 
+                        className="flex-1 border-2 border-black border-dashed px-3 py-2 text-sm font-mono outline-none focus:border-solid focus:border-hyper-blue bg-white"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const val = (e.target as HTMLInputElement).value;
+                            if (val) {
+                              const newLinks = [...(resumeData.personalInfo?.links || []), val];
+                              handleUpdate('personalInfo', { ...resumeData.personalInfo, links: newLinks });
+                              (e.target as HTMLInputElement).value = '';
+                            }
                           }
-                        }
-                      }}
-                    />
+                        }}
+                      />
+                      <button
+                        onClick={() => {
+                          const input = document.getElementById('link-input') as HTMLInputElement;
+                          if (input?.value) {
+                            const newLinks = [...(resumeData.personalInfo?.links || []), input.value];
+                            handleUpdate('personalInfo', { ...resumeData.personalInfo, links: newLinks });
+                            input.value = '';
+                          }
+                        }}
+                        className="border-2 border-black px-3 py-2 font-bold text-sm hover:bg-black hover:text-white transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
             </section>

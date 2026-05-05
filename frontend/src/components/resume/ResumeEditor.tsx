@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Card } from '../ui/Card';
+import { useEffect } from 'react';
 
 interface ResumeEditorProps {
   content: string;
@@ -30,6 +30,15 @@ export const ResumeEditor = ({ content, onChange, label }: ResumeEditorProps) =>
       },
     },
   });
+
+  // Sync editor content when prop changes externally
+  useEffect(() => {
+    if (!editor) return;
+    const current = editor.getHTML();
+    if (current !== content) {
+      editor.commands.setContent(content || '', false);
+    }
+  }, [content, editor]);
 
   return (
     <div className="space-y-2">
