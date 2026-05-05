@@ -38,11 +38,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html
-      lang={locale}
-      className={`${geistSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col selection:bg-hyper-blue selection:text-white">
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${spaceGrotesk.variable} min-h-full flex flex-col selection:bg-hyper-blue selection:text-white antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <ToastProvider>
             {children}
